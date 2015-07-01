@@ -20,6 +20,9 @@ typedef struct _tree
 void insertToTree(tree *pTree, int data);
 void printTree(node *pNode);
 node* findNode(tree *pTree, int value);
+node* getSuccessor(tree *pTree, int data);
+node* getMinimum(node *currentNode);
+
 
 int main(int argc, char const *argv[])
 {
@@ -28,9 +31,16 @@ int main(int argc, char const *argv[])
 	memset(&myTree, 0, sizeof(tree));
 	insertToTree(&myTree, 20);
 	insertToTree(&myTree, 18);
-	insertToTree(&myTree, 21);
+	insertToTree(&myTree, 25);
 	insertToTree(&myTree, 2);
-	tmpNode = findNode(&myTree, 3);
+	insertToTree(&myTree, 13);
+	insertToTree(&myTree, 6);
+	insertToTree(&myTree, 1);
+	insertToTree(&myTree, 19);
+	insertToTree(&myTree, 21);
+	//printTree(myTree.root);
+	tmpNode = getSuccessor(&myTree, 25);
+
 	if (NULL != tmpNode)
 	{
 		printf("data: %d\n", tmpNode->data);
@@ -112,12 +122,47 @@ node* findNode(tree *pTree, int data)
 	return currentNode;
 }
 
+
+node* getMinimum(node *currentNode)
+{
+	node *pNodeTmp = NULL;
+	while(NULL != currentNode)
+	{
+		pNodeTmp = currentNode;
+		currentNode = currentNode->left;
+	}
+	return pNodeTmp;
+}
+
 node* getSuccessor(tree *pTree, int data)
 {
-	node *currentNode = findNode(data);
+	node *currentNode = findNode(pTree, data);
+	node *pTmp = NULL;
+	if (NULL != currentNode->right)
+	{
+		pTmp = getMinimum(currentNode->right);
+	}
+	else
+	{
+		pTmp = currentNode;
+		currentNode = currentNode->parent;
+		printf("currentNode: %d\n", currentNode->data);
+		while(currentNode != NULL && pTmp == currentNode->right)
+		{
+			pTmp = currentNode;
+			currentNode = currentNode->parent;
+			//printf("currentNode: %d\n", currentNode->data);
+		}
+		pTmp = currentNode;
+	}
+	return pTmp;
 }
 
 void deleteNode(tree *pTree, int data)
 {
-
+	node *currentNode = findNode(pTree, data);
+	if (NULL == currentNode->left)
+	{
+		/* code */
+	}
 }
