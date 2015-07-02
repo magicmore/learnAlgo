@@ -144,16 +144,12 @@ node* getSuccessor(tree *pTree, int data)
 	}
 	else
 	{
-		pTmp = currentNode;
-		currentNode = currentNode->parent;
-		printf("currentNode: %d\n", currentNode->data);
-		while(currentNode != NULL && pTmp == currentNode->right)
+		pTmp = currentNode->parent;
+		while(pTmp != NULL && pTmp->right == currentNode)
 		{
-			pTmp = currentNode;
-			currentNode = currentNode->parent;
-			//printf("currentNode: %d\n", currentNode->data);
+			currentNode = pTmp;
+			pTmp = currentNode->parent;
 		}
-		pTmp = currentNode;
 	}
 	return pTmp;
 }
