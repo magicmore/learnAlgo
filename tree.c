@@ -22,7 +22,7 @@ void printTree(node *pNode);
 node* findNode(tree *pTree, int value);
 node* getSuccessor(tree *pTree, int data);
 node* getMinimum(node *currentNode);
-
+void revertTree(node *currentNode);
 
 int main(int argc, char const *argv[])
 {
@@ -39,17 +39,9 @@ int main(int argc, char const *argv[])
 	insertToTree(&myTree, 19);
 	insertToTree(&myTree, 21);
 	//printTree(myTree.root);
-	tmpNode = getSuccessor(&myTree, 25);
+	revertTree(myTree.root);
 
-	if (NULL != tmpNode)
-	{
-		printf("data: %d\n", tmpNode->data);
-	}
-	else
-	{
-		printf("Null Node.\n");
-	}
-	//printTree(myTree.root);
+	printTree(myTree.root);
 	return 0;
 }
 
@@ -157,8 +149,23 @@ node* getSuccessor(tree *pTree, int data)
 void deleteNode(tree *pTree, int data)
 {
 	node *currentNode = findNode(pTree, data);
-	if (NULL == currentNode->left)
+	if (NULL == currentNode->left || NULL == currentNode->right)
 	{
-		/* code */
+		if (NULL == currentNode->left)
+		{
+			//currentNode->parent->
+		}
+	}
+}
+
+void revertTree(node *currentNode)
+{
+	if (NULL != currentNode)
+	{
+		revertTree(currentNode->left);
+		revertTree(currentNode->right);
+		node *pTemp = currentNode->left;
+		currentNode->left = currentNode->right;
+		currentNode->right = pTemp;
 	}
 }
